@@ -18,6 +18,7 @@ export class ObjectivesController {
 
   @Get('/allObjectives')
   async getAllObjectives() {
+    
     try {
       const objectives = await this.objectiveService.getAll(); // Llama al servicio para obtener todos los objetivos
       return objectives;

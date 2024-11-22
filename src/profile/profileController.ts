@@ -1,13 +1,12 @@
-import { Controller, Post, Body, UseInterceptors, UploadedFile, Param, Get, NotFoundException } from '@nestjs/common';
+import { Controller, Post, Body, Param, Get, NotFoundException, Put } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { ProfileUserDto } from './dto/profile.dto';
-import 'multer';
 
 @Controller('profile')
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
-  // Crear un perfil de usuario
+  // create
   @Post('/create')
   async create(@Body() profileDto: ProfileUserDto) {
     const profile = this.profileService.create(profileDto);
@@ -17,7 +16,7 @@ export class ProfileController {
     return profile;
   }
 
-  // Obtener el perfil por email
+  // retrieve
   @Get('email/:email')
   async getProfile(@Param('email') email: string) {
     const profile = await this.profileService.findProfileByEmail(email);
@@ -26,4 +25,11 @@ export class ProfileController {
     }
     return profile;
   }
+
+  //update
+  @Put('/update/:id')
+  async update(@Param('id') id: string, @Body() profileDto: ProfileUserDto) {
+    return this.profileService.update(id, profileDto);
+  }
+  
 }

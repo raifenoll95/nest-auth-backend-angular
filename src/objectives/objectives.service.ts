@@ -25,14 +25,9 @@ export class ObjectiveService {
     }
   }
 
-  //Devuelve todos los objetivos
-  async getAll(): Promise<Objectives[]> {
-    try {
-      // Usa Mongoose para obtener todos los documentos en la colección
-      const objectives = await this.objectivesModel.find().exec();
-      return objectives.map(obj => obj.toJSON()); // Opcional: convertirlos a objetos JSON simples
-    } catch (error) {
-      throw new InternalServerErrorException('Failed to fetch objectives.');
-    }
+  //Devuelve todos los objetivos de un usuario
+  async getObjectivesByUser(id: string): Promise<Objectives[]> {
+    const objectives = await this.objectivesModel.find({ idUser: id });
+    return objectives;
   }
 }

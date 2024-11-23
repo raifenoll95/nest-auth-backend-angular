@@ -8,25 +8,25 @@ export class Profile {
     @Prop({ required: true })
     name: string;
 
-    @Prop({ required: true })
-    age: number;  // Cambiar de boolean a number
+    @Prop()
+    age: number;
 
-    @Prop({ required: true })
+    @Prop()
     gender: string;
 
-    @Prop({ required: true })
-    height: number;  // Cambiar de string a number
+    @Prop()
+    height: number;
 
-    @Prop({ required: true })
-    weight: number;  // Cambiar de string a number
+    @Prop()
+    weight: number;
 
     @Prop({ unique: true, required: true })
     email: string;
 
-    @Prop({ required: true })
+    @Prop()
     specialty: string;
 
-    @Prop({ required: true })
+    @Prop()
     photo: string;
 }
 

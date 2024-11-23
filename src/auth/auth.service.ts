@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './interfaces/jwt-payload';
 import { LoginResponse } from './interfaces/login-response';
 import { RegisterDto } from './dto/register.dto';
+import { UpdateProfileUserDto } from './dto/update-user';
 
 @Injectable()
 export class AuthService {
@@ -36,9 +37,6 @@ export class AuthService {
       await newUser.save();
       const {password:_, ...user} = newUser.toJSON();
       return user;
-
-      // 2 Guardar usuario
-      // 3 generar JWT
     } 
     catch(error)
     {
@@ -95,10 +93,6 @@ export class AuthService {
     return `This action returns a #${id} auth`;
   }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
   remove(id: number) {
     return `This action removes a #${id} auth`;
   }
@@ -107,5 +101,32 @@ export class AuthService {
   getJwToken(payload: JwtPayload) {
     const token = this.jwtService.sign(payload);
     return token;
+  }
+
+  //Obten un usuario por su ID.
+  async getUser(id: string) {
+    const user = await this.userModel.findById(id);
+    console.log(user.toJSON());
+    return user ? user.toJSON() : null;
+  }
+
+  // Actualizar un usuario
+  async update(id: string, userDto: UpdateProfileUserDto): Promise<User> {
+    try {
+      // Intentamos buscar el perfil por su ID
+      const updatedUser = await this.userModel.findByIdAndUpdate(id, userDto, {
+        new: true, // Devuelve el perfil actualizado
+        runValidators: true, // Ejecuta las validaciones antes de guardar
+      });
+
+      // Si no se encontró el perfil, lanzamos un error
+      if (!updatedUser) {
+        throw new BadRequestException('Perfil no encontrado');
+      }
+
+      return updatedUser;
+    } catch (error) {
+      throw new InternalServerErrorException('No se pudo actualizar el perfil');
+    }
   }
 }

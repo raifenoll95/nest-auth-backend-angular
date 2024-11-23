@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Put, NotFoundException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
@@ -7,6 +7,7 @@ import { RegisterDto } from './dto/register.dto';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginResponse } from './interfaces/login-response';
 import { User } from './entities/user.entity';
+import { UpdateProfileUserDto } from './dto/update-user';
 
 @Controller('auth')
 export class AuthController {
@@ -18,22 +19,35 @@ export class AuthController {
   }
 
   @Post('/login')
-  login( @Body() loginDto: LoginDto  ) {
+  login( @Body() loginDto: LoginDto) {
     return this.authService.login( loginDto );
   }
 
+  //post: register
   @Post('/register')
-  register( @Body() registerDto: RegisterDto  ) {
+  register( @Body() registerDto: RegisterDto) {
     return this.authService.register( registerDto );
   }
 
+  //update
+  @Put('/updateProfileValue/:id')
+  async update(@Param('id') id: string, @Body() updateProfileUserDto: UpdateProfileUserDto) {
+    return this.authService.update(id, updateProfileUserDto);
+  }
+
+  //get
+  @Get('/getUser/:id')
+  async get(@Param('id') id: string) {
+    const user = this.authService.getUser(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
+  }
 
   @UseGuards( AuthGuard )
   @Get()
   findAll( @Req() req: Request ) {
-    // const user = req['user'];
-    
-    // return user;
     return this.authService.findAll();
   }
 
@@ -50,19 +64,4 @@ export class AuthController {
       token: this.authService.getJwToken({ id: user._id })
     }
   }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.authService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-  //   return this.authService.update(+id, updateAuthDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.authService.remove(+id);
-  // }
 }

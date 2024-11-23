@@ -1,5 +1,4 @@
-import { IsEmail, IsNumber, IsOptional, IsString, MinLength } from "class-validator";
-import { Transform } from 'class-transformer';
+import { IsBoolean, IsEmail, IsNumber, IsOptional, IsString, MinLength } from "class-validator";
 
 export class ProfileUserDto {
     
@@ -7,25 +6,27 @@ export class ProfileUserDto {
     name: string;
     
     @IsNumber()
-    @Transform(({ value }) => Number(value)) // Convierte el valor a un número
-    age: number;
+    @IsOptional()
+    age?: number;
 
     @IsString()
-    gender: string;
+    @IsOptional()
+    gender?: string;
 
     @IsNumber()
-    @Transform(({ value }) => Number(value)) // Convierte el valor a un número
-    height: number;
+    @IsOptional()
+    height?: number;
 
     @IsNumber()
-    @Transform(({ value }) => Number(value)) // Convierte el valor a un número
-    weight: number;
+    @IsOptional()
+    weight?: number;
 
     @IsEmail()
     email: string;
 
     @IsString()
-    specialty: string;
+    @IsOptional()
+    specialty?: string;
 
     @IsString()
     @IsOptional()

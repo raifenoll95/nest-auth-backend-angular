@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, NotFoundException, Put, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Get, NotFoundException, Put, HttpException, HttpStatus, Param } from '@nestjs/common';
 import { ObjectiveUserDto} from './dto/objective.dto';
 import { ObjectiveService } from './objectives.service';
 
@@ -16,11 +16,11 @@ export class ObjectivesController {
     return objective;
   }
 
-  @Get('/allObjectives')
-  async getAllObjectives() {
+  @Get('/allObjectivesByUser/:id')
+  async getAllObjectives(@Param('id') id: string) {
     
     try {
-      const objectives = await this.objectiveService.getAll(); // Llama al servicio para obtener todos los objetivos
+      const objectives = await this.objectiveService.getObjectivesByUser(id); // Llama al servicio para obtener todos los objetivos de este usuario
       return objectives;
     } catch (error) {
       throw new HttpException('Error obteniendo los objetivos', HttpStatus.INTERNAL_SERVER_ERROR);

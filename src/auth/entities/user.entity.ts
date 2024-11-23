@@ -8,10 +8,7 @@ export class User {
     @Prop({unique: true, required: true})
     email: string;
 
-    @Prop( {required: true} )
-    name: string;
-
-    @Prop( {default: true })
+    @Prop( )
     isActive: boolean;
 
     @Prop({ minlength: 6 })
@@ -19,6 +16,9 @@ export class User {
 
     @Prop({type: [String], default: ['user']})
     roles: string[];
+
+    @Prop()
+    perfil: boolean;
 }
 
 export const  UserSchema = SchemaFactory.createForClass(User);

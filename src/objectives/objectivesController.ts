@@ -26,4 +26,15 @@ export class ObjectivesController {
       throw new HttpException('Error obteniendo los objetivos', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+  @Get('/getObjectiveById/:id')
+  async getObjectiveById(@Param('id') id: string) {
+    
+    try {
+      const objective = await this.objectiveService.getObjectiveById(id); // Llama al servicio para obtener todos los objetivos de este usuario
+      return objective;
+    } catch (error) {
+      throw new HttpException('Error obteniendo los objetivos', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 }

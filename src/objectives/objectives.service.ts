@@ -30,4 +30,10 @@ export class ObjectiveService {
     const objectives = await this.objectivesModel.find({ idUser: id });
     return objectives;
   }
+
+  //Devuelve un objetivo
+  async getObjectiveById(id: string): Promise<Objectives> {
+    const objective = await this.objectivesModel.findById(id);
+    return objective;
+  }
 }
